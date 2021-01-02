@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"
+      integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ=="
+      crossorigin="anonymous"></script>
+
+    <script src="app.js"></script>
+
+  </head>
+
+  <body class="container-fluid">
+
+    <div class="row">
+
+      <div class="col-md-4">
+
+        <h3>
+          Uploading files using BusBoy
+        </h3>
+
+        <form id="form" method="post" enctype="multipart/form-data">
+
+          <div class="form-group">
+
+            <label for="field">Files</label>
+            <input id="file" type="file" class="form-control" name="file" onchange="showSize()" multiple />
+
+            <br />
+
+            <output id="size" class="span"></output>
+
+            <br />
+
+            <output id="msg" class="span"></output>
+
+            <input type="submit" class="btn btn-success">
+            <input type="reset" class="btn btn-danger">
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </body>
+
+</html>
