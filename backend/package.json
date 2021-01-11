@@ -4,10 +4,12 @@
     "start": "nodemon --experimental-specifier-resolution=node src/index.js"
   },
   "devDependencies": {
-    "eslint": "^7.16.0",
     "nodemon": "^2.0.6"
   },
   "dependencies": {
+    "busboy": "^0.3.1",
+    "pino": "^6.10.0",
+    "pino-pretty": "^4.3.0",
     "socket.io": "^3.0.4"
   }
 }

@@ -1,4 +1,6 @@
 import url from 'url'
+import UploadHandler from './uploadHandler'
+import { logger, pipelineAsync } from './util'
 
 class Routes {
   #io
@@ -7,17 +9,22 @@ class Routes {
     this.#io = io
   }
 
+ async options(req, resp) {
+   resp.writeHead(204, {
+     'Access-Control-Allow-Origin': '*',
+     'Access-Control-Allow-Methods': 'OPTIONS,POST'
+   })
+   resp.end()
+ } 
+
   async post(req, resp) {
     const { headers } = req
-
     const { query: { socketId  }} = url.parse(req.url, true)
+    const redirectTo = headers.origin
 
-    this.#io.to(socketId).emit('file-uploaded', 500)
-    this.#io.to(socketId).emit('file-uploaded', 500)
-    this.#io.to(socketId).emit('file-uploaded', 500)
-    this.#io.to(socketId).emit('file-uploaded', 500)
+    const uploadHandler = new UploadHandler(this.#io, socketId)
 
-    const onFinish = (resp, redirectTo) => {
+    const onFinish = (resp, redirectTo) => () => {
       resp.writeHead(303, {
         Connection: 'close',
         Location: `${redirectTo}?msg=Files uploaded with success`
@@ -28,7 +35,14 @@ class Routes {
       resp.end()
     }
 
-    onFinish(resp, headers.origin)
+    const busboyInstance = uploadHandler.registerEvents(headers, onFinish(resp, redirectTo))
+
+    await pipelineAsync(
+      req,
+      busboyInstance
+    )
+
+    logger.info('request finished with success')
   }
 
 }

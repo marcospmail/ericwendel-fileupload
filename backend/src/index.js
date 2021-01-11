@@ -1,6 +1,7 @@
 import http from 'http'
 import { Server } from 'socket.io'
 import Routes from './routes'
+import { logger } from './util'
 
 const PORT = 3000
 
@@ -10,7 +11,7 @@ const handler = (req, res) => {
   const routes = new Routes(io)
   const chosen = routes[req.method.toLowerCase()] || defaultRoute
 
-  chosen.apply(routes, [req, res])
+  chosen.apply(routes, [req, res])    
 }
 
 const server = http.createServer(handler)
@@ -21,10 +22,10 @@ const io = new Server(server, {
   }
 })
 
-io.on('connection', (socket) => console.log('someone connected', socket.id))
+io.on('connection', (socket) => logger.info('someone connected' + socket.id))
 
 // setInterval(() => {
 //   io.emit('file-uploaded', 500)
 // }, 10)
 
-server.listen(PORT, () => console.log(`app running at port ${PORT}`))
+server.listen(PORT, () => logger.info(`app running at port ${PORT}`))
